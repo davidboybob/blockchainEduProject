@@ -5,7 +5,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"block/data"
+	"github.com/davidboybob/blockchainEduProject/data"
 
 	"github.com/spf13/cobra"
 )

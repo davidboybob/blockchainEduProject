@@ -5,8 +5,8 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package main
 
 import (
-	"block/cmd"
-	"block/data"
+	"github.com/davidboybob/blockchainEduProject/cmd"
+	"github.com/davidboybob/blockchainEduProject/data"
 )
 
 func main() {

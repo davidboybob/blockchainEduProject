@@ -35,6 +35,7 @@ func CreateTable() {
 	statement.Exec()
 	log.Println("database table created!")
 
+	// defer statement.Close()
 }
 
 func InsertNote(word string, definition string, category string) {

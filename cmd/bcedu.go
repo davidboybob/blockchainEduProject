@@ -4,9 +4,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 */
 package cmd
 
-import (
-	"github.com/spf13/cobra"
-)
+import "github.com/spf13/cobra"
 
 // blockchainCmd represents the blockchain command
 var bceduCmd = &cobra.Command{
@@ -15,7 +13,6 @@ var bceduCmd = &cobra.Command{
 	Long:  `Block chain Education!!`,
 	Run: func(cmd *cobra.Command, args []string) {
 		createNewNote()
-
 	},
 }
 

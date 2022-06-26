@@ -5,33 +5,17 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
-var (
-	version bool
-)
-
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "block",
-	Short: "Block chain Education app!",
-	Long:  `How to learn Blockchain? You can learn Blockchian with us! `,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		if version {
-			return printVersion()
-		}
-		return cmd.Help()
-	},
-}
-
-func printVersion() error {
-	const version = "1.0"
-	fmt.Println("Version: ", version)
-	return nil
+	Short: "Wellcome, Block Chain Education by sj, gt",
+	Long: `We made CLI about blockchain for education.
+we want you to know about Blockchain concept and workflow.
+Just enjoy CLI! Good Luck! 😊`,
 }
 
 func Execute() {

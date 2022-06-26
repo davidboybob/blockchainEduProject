@@ -5,10 +5,11 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"block/data"
 	"errors"
 	"fmt"
 	"os"
+
+	"github.com/davidboybob/blockchainEduProject/data"
 
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
