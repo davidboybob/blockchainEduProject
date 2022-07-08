@@ -6,8 +6,10 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/davidboybob/blockchainEduProject/data"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
@@ -22,6 +24,19 @@ var startCmd = &cobra.Command{
 
 		promptStartSelect()
 	},
+}
+
+type userInfo struct {
+	name           string
+	tutorial_score int
+	last_step      string
+}
+
+func createNewUser() {
+	// User 에 데이터 있는 지 확인
+	log.Println("displayalluser")
+	data.DisplayAllUser()
+
 }
 
 // type promptContents struct {
@@ -81,6 +96,8 @@ func promptStartSelect() string {
 		fmt.Println("Nomad Coin Lecture")
 	case "Block Chain level Test":
 		fmt.Println("Block Chain level Test")
+		createNewUser()
+
 	case "Learn Block Chain":
 		fmt.Println("Learn Block Chain")
 		promptChapSelect()

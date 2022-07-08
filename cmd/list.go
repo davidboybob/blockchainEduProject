@@ -5,8 +5,6 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/davidboybob/blockchainEduProject/data"
-
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +14,7 @@ var listCmd = &cobra.Command{
 	Short: "See list of all notes you've added",
 	Long:  `See list of all notes you've added`,
 	Run: func(cmd *cobra.Command, args []string) {
-		data.DisplayAllNotes()
+		// data.DisplayAllNotes()
 	},
 }
 
