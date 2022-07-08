@@ -12,6 +12,9 @@ git clone https://github.com/davidboybob/blockchainEduProject.git
 
 ```jsx
 cd $HOME/go/src/github.com/davidboybob/blockchainEduProject
+
+go mod init # go.mod 초기화
+
 go mod tidy # 소스 코드 패키지 동기화(다운로드)
 ```
 
