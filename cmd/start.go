@@ -6,8 +6,10 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/davidboybob/blockchainEduProject/data"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
@@ -22,12 +24,24 @@ var startCmd = &cobra.Command{
 	},
 }
 
+type userInfo struct {
+	name           string
+	tutorial_score int
+	last_step      string
+}
+
+func createNewUser() {
+	// User 에 데이터 있는 지 확인
+	log.Println("displayalluser")
+	data.DisplayAllUser()
+
+}
+
 // type promptContents struct {
 // 	errorMsg string
 // 	label    string
 // }
-
-func promptStartSelect() string {
+func promptChapSelect() string {
 	prompt := promptui.Select{
 		Label: "Select Day",
 		Items: []string{"chap1_Concept",
@@ -56,6 +70,36 @@ func promptStartSelect() string {
 		fmt.Println("Choose Chap4_Create Wallet")
 	case "chap5_P2P":
 		fmt.Println("Choose chap5_P2P")
+	}
+
+	return result
+}
+
+func promptStartSelect() string {
+	prompt := promptui.Select{
+		Label: "Select Mode",
+		Items: []string{"Nomad Coin Lecture",
+			"Block Chain level Test",
+			"Learn Block Chain"},
+	}
+
+	_, result, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		os.Exit(1)
+	}
+
+	switch result {
+	case "Nomad Coin Lecture":
+		fmt.Println("Nomad Coin Lecture")
+	case "Block Chain level Test":
+		fmt.Println("Block Chain level Test")
+		createNewUser()
+
+	case "Learn Block Chain":
+		fmt.Println("Learn Block Chain")
+		promptChapSelect()
 	}
 
 	return result
