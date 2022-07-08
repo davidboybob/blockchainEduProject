@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -20,6 +19,8 @@ var startCmd = &cobra.Command{
 	Short: "Eduation Start",
 	Long:  `Start Education`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// fmt.Println("start called")
+
 		promptStartSelect()
 	},
 }
@@ -61,7 +62,6 @@ func promptChapSelect() string {
 	switch result {
 	case "chap1_Concept":
 		fmt.Println("Choose chap1_Concept")
-		// 함수
 	case "chap2_Create Blockchain":
 		fmt.Println("Choose Chap2_Create Blockchain")
 	case "chap3_Create DB":
