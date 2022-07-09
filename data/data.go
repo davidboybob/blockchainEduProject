@@ -7,39 +7,39 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var db *sql.DB
+var Db *sql.DB
 
-type user struct {
-	id             int
-	name           string
-	tutorial_score int
-	last_step      string
-	create_at      string
-	update_at      string
+type User struct {
+	Id             int
+	Name           string
+	Tutorial_score int
+	Last_step      string
+	Create_at      string
+	Update_at      string
 }
 
 func OpenDatabase() error {
 	var err error
 
-	db, err = sql.Open("sqlite3", "./sqlite-database.db")
+	Db, err = sql.Open("sqlite3", "./sqlite-database.db")
 	if err != nil {
 		return err
 	}
 
-	return db.Ping()
+	return Db.Ping()
 }
 
 func CreateTable() {
 	createTableSQL := `CREATE TABLE IF NOT EXISTS USER (
 		"id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 		"name" TEXT,
-		"tutorial_score" INT,
-		"last_step" TEXT,
+		"tutorial_score" INT default 0,
+		"last_step" TEXT default tutorial,
 		"create_at" datetime default CURRENT_TIMESTAMP,
-		"update_at" dateitme default CURRENT_TIMESTAMP
+		"update_at" datetime default CURRENT_TIMESTAMP
 	);`
 
-	statement, err := db.Prepare(createTableSQL)
+	statement, err := Db.Prepare(createTableSQL)
 
 	if err != nil {
 		log.Fatal(err.Error())
@@ -51,10 +51,27 @@ func CreateTable() {
 	log.Println("database table created!")
 
 }
+func InsertUser(name string) {
+	insertUserSQL := `INSERT INTO User(name) VALUES (?)`
+	statement, _ := Db.Prepare(insertUserSQL)
+
+	_, err := statement.Exec(name)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println("Inserted Your Info successfully")
+}
+
+// func GetUser(db *sql.DB, name string) (User, err) {
+// 	var user User
+// 	rows := db.QueryRow("select * from USER where id = 0")
+// 	err := rows.Scan(&)
+// }
 
 func InsertNote(word string, definition string, category string) {
 	insertNoteSQL := `INSERT INTO blockchainedu(word, definition, category) VALUES(?, ?, ?)`
-	statement, err := db.Prepare((insertNoteSQL))
+	statement, err := Db.Prepare((insertNoteSQL))
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -66,27 +83,24 @@ func InsertNote(word string, definition string, category string) {
 	log.Println("Inserted edu note successfully")
 }
 
-func DisplayAllUser() {
-	row, err := db.Query("SELECT * FROM USER ORDER BY name")
+func DisplayUser(db *sql.DB) (*User, error) {
+	var user User
+	row, err := db.Query("SELECT * FROM USER WHERE id = 1")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
+		return &user, err
 	}
-
-	var users = []user{}
 
 	defer row.Close()
 
 	for row.Next() {
-		var id int
-		var name string
-		var tutorial_score int
-		var last_step string
-		var create_at string
-		// var update_at string
-		row.Scan(&id, &name, &tutorial_score, &last_step, &create_at)
-		log.Println("[", name, "] ", "Score: ", tutorial_score, "Step: ", last_step, "ca: ", create_at)
-		users = append(users)
+
+		err := row.Scan(&user.Id, &user.Name, &user.Tutorial_score, &user.Last_step, &user.Create_at, &user.Update_at)
+		if err != nil {
+			log.Println(err)
+			return &User{}, nil
+		}
 	}
 
-	return user
+	return &user, nil
 }

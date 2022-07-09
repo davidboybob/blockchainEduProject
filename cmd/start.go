@@ -4,6 +4,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -25,17 +26,73 @@ var startCmd = &cobra.Command{
 	},
 }
 
-type userInfo struct {
-	name           string
-	tutorial_score int
-	last_step      string
+// type userInfo struct {
+// 	name           string
+// 	tutorial_score int
+// 	last_step      string
+// }
+
+type promptContent struct {
+	errMsg string
+	label  string
+}
+
+func promptGetInput(pc promptContent) string {
+	validate := func(input string) error {
+		if len(input) <= 0 {
+			return errors.New(pc.errMsg)
+		}
+		return nil
+	}
+
+	templates := &promptui.PromptTemplates{
+		Prompt:  "{{ . }}",
+		Valid:   "{{ . | green}}",
+		Invalid: "{{ . | red}}",
+		Success: "{{ . | bold}}",
+	}
+
+	prompt := promptui.Prompt{
+		Label:     pc.label,
+		Templates: templates,
+		Validate:  validate,
+	}
+
+	result, err := prompt.Run()
+	if err != nil {
+		fmt.Printf("Prompt failed %v \n", err)
+		os.Exit(1)
+	}
+
+	// fmt.Printf("Your User name is : %s \n", result)
+	return result
 }
 
 func createNewUser() {
 	// User 에 데이터 있는 지 확인
-	log.Println("displayalluser")
-	data.DisplayAllUser()
+	user, err := data.DisplayUser(data.Db)
+	if err != nil {
+		log.Println(err)
+	}
 
+	if user.Id != 1 {
+		// User 생성
+		log.Println("U are First Time. Please Type your Data. \n")
+
+		namePromptContent := promptContent{
+			"Please provide a step.",
+			"What is your name? ",
+		}
+
+		name := promptGetInput(namePromptContent)
+
+		data.InsertUser(name)
+		log.Println("Welcome, ", name)
+
+	} else {
+		log.Println("Hi, ", user.Name)
+		return
+	}
 }
 
 // type promptContents struct {
