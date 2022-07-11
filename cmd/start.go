@@ -153,6 +153,7 @@ func promptStartSelect() string {
 	case "Block Chain level Test":
 		fmt.Println("Block Chain level Test")
 		createNewUser()
+		CreateQuestionBank(10)
 
 	case "Learn Block Chain":
 		fmt.Println("Learn Block Chain")
