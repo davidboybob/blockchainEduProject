@@ -1,9 +1,13 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
+
+	"github.com/manifoldco/promptui"
 )
 
 var level1QuestionsMap = map[string]bool{
@@ -25,6 +29,41 @@ var level1QuestionsMap = map[string]bool{
 	"블록체인은 암호화 해시를 사용하여 블록 간에 링크를 만든다.":                                            true,
 	"암호화 해시는 임의 크기의 데이터를 고정된 크기의 비트 표현에 매핑하는 알고리즘이다.":                              true,
 	"비트코인은 SHA-256 해시 알고리즘을 사용한다":                                                  true,
+}
+
+type QuestionContent struct {
+	errMsg string
+	label  string
+}
+
+func levelTestGetInput(qc QuestionContent) string {
+	validate := func(input string) error {
+		if len(input) <= 0 {
+			return errors.New(qc.errMsg)
+		}
+		return nil
+	}
+
+	templates := &promptui.PromptTemplates{
+		Prompt:  "{{ . }}",
+		Valid:   "{{ . | green }}",
+		Invalid: "{{ . | red }}",
+		Success: "{{ . | bold}}",
+	}
+
+	prompt := promptui.Prompt{
+		Label:     qc.label,
+		Templates: templates,
+		Validate:  validate,
+	}
+
+	result, err := prompt.Run()
+	if err != nil {
+		fmt.Printf("Prompt failed %v \n", err)
+		os.Exit(1)
+	}
+
+	return result
 }
 
 type Queue []interface{}
@@ -73,11 +112,23 @@ func CreateQuestionBank(count int) *Queue {
 
 	q := Queue{}
 
+	for question, answer := range level1QuestionsMap {
+		fmt.Println(question, answer)
+	}
+
 	var idx int = 0
-	for index, element := range level1QuestionsMap {
+	for index := range level1QuestionsMap {
 		for index2 := range questionSlice[0:count] {
 			if idx == index2 {
-				fmt.Println(index, "=>", element)
+				levelTestPropmptContent := QuestionContent{
+					"Please, Do it Again!",
+					index,
+				}
+
+				levelTestAnswer := levelTestGetInput(levelTestPropmptContent)
+
+				fmt.Println(levelTestAnswer)
+				// fmt.Println(index, "=>", element)
 				q.EnQueue(index)
 			}
 		}
