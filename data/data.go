@@ -105,3 +105,13 @@ func DisplayUser(db *sql.DB) (*User, error) {
 
 	return &user, nil
 }
+
+func UpdateUserScore(score int) {
+	insertScoreSQL := `UPDATE User SET tutorial_score = (?) WHERE id = 1`
+	statement, _ := Db.Prepare(insertScoreSQL)
+
+	_, err := statement.Exec(score)
+	if err != nil {
+		log.Fatalln(err)
+	}
+}

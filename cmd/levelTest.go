@@ -1,9 +1,16 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
+	"os"
+	"strconv"
+	"strings"
 	"time"
+
+	"github.com/davidboybob/blockchainEduProject/data"
+	"github.com/manifoldco/promptui"
 )
 
 var level1QuestionsMap = map[string]bool{
@@ -25,6 +32,49 @@ var level1QuestionsMap = map[string]bool{
 	"블록체인은 암호화 해시를 사용하여 블록 간에 링크를 만든다.":                                            true,
 	"암호화 해시는 임의 크기의 데이터를 고정된 크기의 비트 표현에 매핑하는 알고리즘이다.":                              true,
 	"비트코인은 SHA-256 해시 알고리즘을 사용한다":                                                  true,
+}
+
+type QuestionContent struct {
+	errMsg  string
+	errMsg2 string
+	label   string
+}
+
+func tutorialGetInput(qc QuestionContent) string {
+	validate := func(input string) error {
+		// fmt.Println(input)
+		var input_lower = strings.ToLower(input)
+		if len(input_lower) <= 0 {
+			return errors.New(qc.errMsg)
+		} else if input_lower == "true" {
+			return nil
+		} else if input_lower == "false" {
+			return nil
+		}
+		return errors.New(qc.errMsg2)
+	}
+
+	templates := &promptui.PromptTemplates{
+		Prompt:  "{{ . }}",
+		Valid:   "{{ . | green }}",
+		Invalid: "{{ . | red }}",
+		Success: "{{ . | bold}}",
+	}
+
+	prompt := promptui.Prompt{
+		Label:     qc.label,
+		Templates: templates,
+		Validate:  validate,
+	}
+
+	result, err := prompt.Run()
+	if err != nil {
+		fmt.Printf("Prompt failed %v \n", err)
+		os.Exit(1)
+	}
+
+	return result
+
 }
 
 type Queue []interface{}
@@ -57,33 +107,54 @@ func CreateQuestionBank(count int) *Queue {
 
 	//1. 무작위로 문제를 내기 위해 순서를 섞는다.
 	questionTotalCnt := len(level1QuestionsMap)
-	fmt.Printf("전체 문제 수 %d \n", questionTotalCnt)
+	fmt.Printf("전체 문제 수 %d \n", count)
 	questionSlice := make([]int, questionTotalCnt)
 	for i := 0; i < questionTotalCnt; i++ {
 		questionSlice[i] = i
 	}
 
-	fmt.Println("섞기 전 : ", questionSlice)
+	// fmt.Println("섞기 전 : ", questionSlice)
 
 	rand.Seed(time.Now().UnixNano()) //random 값 생성을 위한 seed 설정 (default가 시간이긴 하다.)
 
 	rand.Shuffle(len(questionSlice), func(i, j int) { questionSlice[i], questionSlice[j] = questionSlice[j], questionSlice[i] })
 
-	fmt.Println("섞은 후 : ", questionSlice)
+	// fmt.Println("섞은 후 : ", questionSlice)
 
 	q := Queue{}
 
 	var idx int = 0
+	var total_score = count
+	var score int = 0
 	for index, element := range level1QuestionsMap {
 		for index2 := range questionSlice[0:count] {
 			if idx == index2 {
-				fmt.Println(index, "=>", element)
+				// 무작위로 생성된 문제를 풀 수 있는 로직.
+				tutorialPropmptContent := QuestionContent{
+					"Please, Do it Again!",
+					"Please, answer true or false.",
+					fmt.Sprintf("Q%d: %s ", idx+1, index),
+				}
+
+				tutorialAnswer := tutorialGetInput(tutorialPropmptContent)
+
+				if tutorialAnswer == strconv.FormatBool(element) {
+					fmt.Println("Correct!")
+					score++
+				} else {
+					fmt.Println("Wrong!")
+				}
+
+				fmt.Println("A: ", element)
+				// fmt.Println(index, "=>", element)
+
 				q.EnQueue(index)
 			}
 		}
 		idx++
 	}
-
+	fmt.Println("\n", "Your Score :", score, "/", total_score)
+	data.UpdateUserScore(score)
 	//사용할때는 Dequeue 해서 사용
 	//q.Dequeue()
 
