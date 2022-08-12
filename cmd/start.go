@@ -69,12 +69,13 @@ func promptGetInput(pc promptContent) string {
 }
 
 func createNewUser() {
-	// User 에 데이터 있는 지 확인
+	// 예외 처리 = User 생성 안될 때,
+	// User Table 에 데이터 있는지 확인
 	user, err := data.DisplayUser(data.Db)
 	if err != nil {
 		log.Println(err)
 	}
-
+	fmt.Println(user)
 	if user.Id != 1 {
 		// User 생성
 		log.Println("U are First Time. Please Type your Data. \n")
@@ -152,6 +153,7 @@ func promptStartSelect() string {
 		fmt.Println("Nomad Coin Lecture")
 	case "Block Chain level Test":
 		fmt.Println("Block Chain level Test")
+		// return 아아디 생성 잘못되면, 끝나게끔
 		createNewUser()
 		CreateQuestionBank(10)
 

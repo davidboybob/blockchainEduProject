@@ -87,7 +87,8 @@ func DisplayUser(db *sql.DB) (*User, error) {
 	var user User
 	row, err := db.Query("SELECT * FROM USER WHERE id = 1")
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln(err) // Fatal = 에러를 나타내는 출력문
+		// log.Println(err) //
 		return &user, err
 	}
 
