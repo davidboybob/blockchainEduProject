@@ -107,7 +107,8 @@ func CreateQuestionBank(count int) *Queue {
 
 	//1. 무작위로 문제를 내기 위해 순서를 섞는다.
 	questionTotalCnt := len(level1QuestionsMap)
-	fmt.Printf("전체 문제 수 %d \n", count)
+	fmt.Println("🍺🍻🥂🥃A total of ", count, "quetions will be asked.")
+	fmt.Println("Enter the answer to each quetion as 'true' or 'false' ლ(╹◡╹ლ)")
 	questionSlice := make([]int, questionTotalCnt)
 	for i := 0; i < questionTotalCnt; i++ {
 		questionSlice[i] = i
