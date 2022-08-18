@@ -2,6 +2,7 @@ package data
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -25,6 +26,19 @@ func OpenDatabase() error {
 	if err != nil {
 		return err
 	}
+
+	//#region User Table 존재 여부 확인
+	var isExist string
+	err = Db.QueryRow(`SELECT COUNT(*) FROM sqlite_master WHERE NAME="USER"`).Scan(&isExist)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	if isExist == "0" {
+		fmt.Println(`Can't find UserTable. Run CreateTable function!`)
+		CreateTable()
+	}
+	//#endregion
 
 	return Db.Ping()
 }
