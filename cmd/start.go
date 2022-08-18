@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"github.com/davidboybob/blockchainEduProject/data"
+	"github.com/davidboybob/blockchainEduProject/global"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
@@ -20,8 +21,6 @@ var startCmd = &cobra.Command{
 	Short: "Eduation Start",
 	Long:  `Start Education`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// fmt.Println("start called")
-
 		promptStartSelect()
 	},
 }
@@ -68,14 +67,14 @@ func promptGetInput(pc promptContent) string {
 	return result
 }
 
-func createNewUser() {
+func UserCheck() {
 	// 예외 처리 = User 생성 안될 때,
 	// User Table 에 데이터 있는지 확인
 	user, err := data.DisplayUser(data.Db)
 	if err != nil {
 		log.Println(err)
 	}
-	fmt.Println(user)
+	//fmt.Println(user)
 	if user.Id != 1 {
 		// User 생성
 		log.Println("U are First Time. Please Type your Data. \n")
@@ -91,9 +90,24 @@ func createNewUser() {
 		log.Println("Welcome, ", name)
 
 	} else {
-		log.Println("Hi, ", user.Name)
+
+		log.Println("Hi, ", user.Name, "Your level is ", levelConverter(user.Tutorial_score))
 		return
 	}
+}
+
+func levelConverter(score int) string {
+	var ret string
+	switch {
+	case score < 5:
+		ret = global.Beginner
+	case score > 4 && score < 9:
+		ret = global.Intermediate
+	case score > 8:
+		ret = global.Advanced
+	}
+
+	return ret
 }
 
 // type promptContents struct {
@@ -137,7 +151,6 @@ func promptStartSelect() string {
 	prompt := promptui.Select{
 		Label: "Select Mode",
 		Items: []string{"Nomad Coin Lecture",
-			"Block Chain level Test",
 			"Learn Block Chain"},
 	}
 
@@ -151,15 +164,13 @@ func promptStartSelect() string {
 	switch result {
 	case "Nomad Coin Lecture":
 		fmt.Println("Nomad Coin Lecture")
-	case "Block Chain level Test":
+		promptChapSelect()
+	case "Learn Block Chain":
 		fmt.Println("Block Chain level Test")
 		// return 아아디 생성 잘못되면, 끝나게끔
-		createNewUser()
-		CreateQuestionBank(10)
-
-	case "Learn Block Chain":
-		fmt.Println("Learn Block Chain")
-		promptChapSelect()
+		UserCheck()
+		learnBlockchainSelect()
+		// CreateQuestionBank(10)
 	}
 
 	return result

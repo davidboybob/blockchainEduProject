@@ -4,7 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strconv"
 
+	"github.com/davidboybob/blockchainEduProject/utils"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -30,9 +32,7 @@ func OpenDatabase() error {
 	//#region User Table 존재 여부 확인
 	var isExist string
 	err = Db.QueryRow(`SELECT COUNT(*) FROM sqlite_master WHERE NAME="USER"`).Scan(&isExist)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	utils.HandleErr(err)
 
 	if isExist == "0" {
 		fmt.Println(`Can't find UserTable. Run CreateTable function!`)
@@ -128,4 +128,15 @@ func UpdateUserScore(score int) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func GetUserScore() int64 {
+	var score string
+	selectScoreSQL := `SELECT tutorial_score from User WHERE id = 1`
+	err := Db.QueryRow(selectScoreSQL).Scan(&score)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	let, err := strconv.ParseInt(score, 10, 64)
+	return let
 }
