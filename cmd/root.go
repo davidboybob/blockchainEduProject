@@ -10,18 +10,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "blockchainEduProject",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Use:   "block",
+	Short: "This is a tool for BlockChain Education. 🌎💲🍖🥙",
+	Long: `This is a tool for BlockChain Education. 🌎💲🍖🥙
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+ Hi, We're Developer Seong Jin, Kyun Tae to be BlockChain Experts.
+ 💸 This app is education for BlockChain Tech.
+ 💰 This app will help you with your development skills.
+ 💶 This app is divided into levels so that you can use it accoding to your abilities.
+	
+ If you like our CLI APP, you can buy a cup of coffee to us. ☕
+
+ Contact to us 📩 davidboybob7780@gmail.com, 📩 kore17641764@gmail.com. 
+	
+	
+	`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -47,5 +52,3 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-
-

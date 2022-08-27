@@ -18,8 +18,8 @@ import (
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "Eduation Start",
-	Long:  `Start Education`,
+	Short: "Blockchain Eduation Start",
+	Long:  `Start BlockChain Education`,
 	Run: func(cmd *cobra.Command, args []string) {
 		promptStartSelect()
 	},
@@ -148,10 +148,18 @@ func promptChapSelect() string {
 }
 
 func promptStartSelect() string {
+	templates := &promptui.SelectTemplates{
+		Label: "{{ . | green }}",
+		Help:  "Hi, We're Starting the Education about Blockchain. Plz, send us a cup of coffee. ☕😁",
+	}
+
 	prompt := promptui.Select{
-		Label: "Select Mode",
-		Items: []string{"Nomad Coin Lecture",
-			"Learn Block Chain"},
+		Label: "Choose Education:",
+		Items: []string{
+			"Nomad Coin Lecture",
+			"Learn Block Chain",
+		},
+		Templates: templates,
 	}
 
 	_, result, err := prompt.Run()
