@@ -25,7 +25,7 @@ func learnBlockchainSelect() string {
 
 	switch result {
 	case "📄Level Test":
-		CreateQuestionBank(10)
+		CreateQuestionBank(global.LevelTestQuestionCount)
 		learnBlockchainSelect()
 	case "😁Learning for me":
 		score := data.GetUserScore()
