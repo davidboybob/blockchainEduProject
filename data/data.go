@@ -17,6 +17,7 @@ type User struct {
 	Name           string
 	Tutorial_score int
 	Last_step      string
+	Experience     int
 	Create_at      string
 	Update_at      string
 }
@@ -49,6 +50,7 @@ func CreateTable() {
 		"name" TEXT,
 		"tutorial_score" INT default 0,
 		"last_step" TEXT default tutorial,
+		"experience" INT default 0,
 		"create_at" datetime default CURRENT_TIMESTAMP,
 		"update_at" datetime default CURRENT_TIMESTAMP
 	);`
@@ -63,8 +65,8 @@ func CreateTable() {
 
 	statement.Exec()
 	log.Println("database table created!")
-
 }
+
 func InsertUser(name string) {
 	insertUserSQL := `INSERT INTO User(name) VALUES (?)`
 	statement, _ := Db.Prepare(insertUserSQL)
@@ -110,7 +112,7 @@ func DisplayUser(db *sql.DB) (*User, error) {
 
 	for row.Next() {
 
-		err := row.Scan(&user.Id, &user.Name, &user.Tutorial_score, &user.Last_step, &user.Create_at, &user.Update_at)
+		err := row.Scan(&user.Id, &user.Name, &user.Tutorial_score, &user.Last_step, &user.Experience, &user.Create_at, &user.Update_at)
 		if err != nil {
 			log.Println(err)
 			return &User{}, nil
@@ -128,6 +130,8 @@ func UpdateUserScore(score int) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	UpdateUserExperience(5)
 }
 
 func GetUserScore() int64 {
@@ -138,5 +142,29 @@ func GetUserScore() int64 {
 		log.Fatalln(err.Error())
 	}
 	let, err := strconv.ParseInt(score, 10, 64)
+	return let
+}
+
+func UpdateUserExperience(point int64) {
+	point += GetUserExperience()
+	insertScoreSQL := `UPDATE User SET experience = (?) WHERE id = 1`
+	statement, _ := Db.Prepare(insertScoreSQL)
+
+	_, err := statement.Exec(point)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println("Experience +5!! (Total ", point, ")")
+}
+
+func GetUserExperience() int64 {
+	var experiencePoint string
+	selectScoreSQL := `SELECT experience from User WHERE id = 1`
+	err := Db.QueryRow(selectScoreSQL).Scan(&experiencePoint)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	let, err := strconv.ParseInt(experiencePoint, 10, 64)
 	return let
 }
