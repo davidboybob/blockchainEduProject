@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/davidboybob/blockchainEduProject/cmd/learn"
 	"github.com/davidboybob/blockchainEduProject/data"
 	"github.com/davidboybob/blockchainEduProject/global"
 	"github.com/manifoldco/promptui"
@@ -34,6 +35,7 @@ func learnBlockchainSelect() string {
 		switch level {
 		case global.Beginner:
 			fmt.Println("go beginner step")
+			learn.LearnForBeginnerSelect()
 		case global.Intermediate:
 			fmt.Println("go intermediate step")
 		case global.Advanced:

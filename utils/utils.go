@@ -10,3 +10,14 @@ func HandleErr(err error) {
 		logFn(err)
 	}
 }
+
+// dictionary 생성자
+type dict struct {
+	data map[string]string
+}
+
+func newDict() *dict {
+	d := dict{}
+	d.data = map[string]string{}
+	return &d
+}

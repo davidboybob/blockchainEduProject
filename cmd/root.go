@@ -23,9 +23,7 @@ var rootCmd = &cobra.Command{
 	
  If you like our CLI APP, you can buy a cup of coffee to us. ☕
 
- Contact to us 📩 davidboybob7780@gmail.com, 📩 kore17641764@gmail.com. 
-	
-	
+ Contact to us 📩 davidboybob7780@gmail.com, 📩 kore17641764@gmail.com.
 	`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:

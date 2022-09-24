@@ -63,7 +63,6 @@ func promptGetInput(pc promptContent) string {
 		os.Exit(1)
 	}
 
-	// fmt.Printf("Your User name is : %s \n", result)
 	return result
 }
 
@@ -74,7 +73,7 @@ func UserCheck() {
 	if err != nil {
 		log.Println(err)
 	}
-	//fmt.Println(user)
+
 	if user.Id != 1 {
 		// User 생성
 		log.Println("U are First Time. Please Type your Data. \n")
@@ -110,10 +109,6 @@ func levelConverter(score int) string {
 	return ret
 }
 
-// type promptContents struct {
-// 	errorMsg string
-// 	label    string
-// }
 func promptChapSelect() string {
 	prompt := promptui.Select{
 		Label: "Select Day",
@@ -154,7 +149,7 @@ func promptStartSelect() string {
 	}
 
 	prompt := promptui.Select{
-		Label: "Choose Education:",
+		Label: "Choose Education: ",
 		Items: []string{
 			"Nomad Coin Lecture",
 			"Learn Block Chain",
