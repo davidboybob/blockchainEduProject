@@ -181,9 +181,5 @@ func promptStartSelect() string {
 
 func init() {
 	rootCmd.AddCommand(startCmd)
-<<<<<<< HEAD
 	fmt.Println("sjpark")
-=======
-	fmt.Print("gt")
->>>>>>> 013d6fd33a4f49bb665075b7266352b556bc697e
 }
