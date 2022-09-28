@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/davidboybob/blockchainEduProject/cmd/learn"
 	"github.com/davidboybob/blockchainEduProject/data"
 	"github.com/davidboybob/blockchainEduProject/global"
 	"github.com/manifoldco/promptui"
@@ -32,16 +31,25 @@ func learnBlockchainSelect() string {
 		score := data.GetUserScore()
 		level := levelConverter(int(score))
 		fmt.Println("Your score is ", score, "Let's start ", level, " Lecture!")
-		switch level {
-		case global.Beginner:
-			fmt.Println("go beginner step")
-			learn.LearnForBeginnerSelect()
-		case global.Intermediate:
-			fmt.Println("go intermediate step")
-		case global.Advanced:
-			fmt.Println("go advanced step")
-		}
+
+		LearnBlockchain(level)
 	}
 
 	return result
+}
+
+func LearnBlockchain(level string) {
+	switch level {
+	case global.Beginner:
+		fmt.Println("go beginner step")
+		//하단계 교육 로직
+		//한단계 종료 후
+		CreateQuestionBank(global.LevelTestQuestionCount, 0)
+	case global.Intermediate:
+		fmt.Println("go intermediate step")
+		CreateQuestionBank(global.LevelTestQuestionCount, 1)
+	case global.Advanced:
+		fmt.Println("go advanced step")
+		CreateQuestionBank(global.LevelTestQuestionCount, 2)
+	}
 }
