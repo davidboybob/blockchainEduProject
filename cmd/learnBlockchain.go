@@ -9,6 +9,37 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
+func LearnForBeginnerSelect() string {
+	templates := &promptui.SelectTemplates{
+		Label: "{{ . | green }}",
+		Help:  "It is a category that summarizes blockchain terms for beginners.",
+	}
+
+	prompt := promptui.Select{
+		Label:     "Select Mode",
+		Items:     []string{"📜 Terms"},
+		Templates: templates,
+	}
+
+	_, result, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		os.Exit(1)
+	}
+
+	switch result {
+	case "📜 Terms":
+		fmt.Println("Terms of Blockchain")
+		// cmd.LearnBlockchainSelect()
+		for key, val := range global.BeginnerTerms {
+			fmt.Printf("- %s: %s\n", key, val)
+		}
+	}
+
+	return result
+}
+
 func learnBlockchainSelect() string {
 	prompt := promptui.Select{
 		Label: "Select Mode",
@@ -43,8 +74,10 @@ func LearnBlockchain(level string) {
 	case global.Beginner:
 		fmt.Println("go beginner step")
 		//하단계 교육 로직
+		LearnForBeginnerSelect()
 		//한단계 종료 후
-		CreateQuestionBank(global.LevelTestQuestionCount, 0)
+		// CreateQuestionBank(global.LevelTestQuestionCount, 0)
+		learnBlockchainSelect()
 	case global.Intermediate:
 		fmt.Println("go intermediate step")
 		CreateQuestionBank(global.LevelTestQuestionCount, 1)
