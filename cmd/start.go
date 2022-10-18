@@ -181,5 +181,4 @@ func promptStartSelect() string {
 
 func init() {
 	rootCmd.AddCommand(startCmd)
-	fmt.Println("sjpark")
 }
