@@ -33,38 +33,7 @@ func LearnForBeginnerSelect() string {
 		fmt.Println("Terms of Blockchain")
 		// cmd.LearnBlockchainSelect()
 		for key, val := range global.BeginnerTerms {
-			fmt.Printf(" -  %s: %s\n", key, val)
-		}
-	}
-
-	return result
-}
-
-func LearnForIntermediateSelect() string {
-	templates := &promptui.SelectTemplates{
-		Label: "{{ . | green }}",
-		Help:  "It is a category that summarizes blockchain terms for beginners.",
-	}
-
-	prompt := promptui.Select{
-		Label:     "Select Mode",
-		Items:     []string{"📜 Terms"},
-		Templates: templates,
-	}
-
-	_, result, err := prompt.Run()
-
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		os.Exit(1)
-	}
-
-	switch result {
-	case "📜 Terms":
-		fmt.Println("Terms of Blockchain")
-		// cmd.LearnBlockchainSelect()
-		for key, val := range global.IntermateTerms {
-			fmt.Printf(" -  %s: %s\n", key, val)
+			fmt.Printf(" - %s: %s\n", key, val)
 		}
 	}
 
@@ -108,10 +77,11 @@ func LearnBlockchain(level string) {
 		LearnForBeginnerSelect()
 		//한단계 종료 후
 		// CreateQuestionBank(global.LevelTestQuestionCount, 0)
+		learnBlockchainSelect()
 	case global.Intermediate:
 		fmt.Println("go intermediate step")
 		// 중단계 교육로직
-		LearnForIntermediateSelect()
+		// LearnForIntermediateSelect()
 		// CreateQuestionBank(global.LevelTestQuestionCount, 1)
 	case global.Advanced:
 		fmt.Println("go advanced step")
